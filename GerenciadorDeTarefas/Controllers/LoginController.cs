@@ -19,11 +19,20 @@ namespace GerenciadorDeTarefas.Controllers
         {
             try
             {
+                if (requisicao == null || requisicao.Login == null || requisicao.Senha == null)
+                {
+                    return BadRequest(new ErroRespostaDto()
+                    {
+                        Status = StatusCodes.Status400BadRequest,
+                        Erro = "Parâmetros de entrada inválidos"
+                    });
+                }
 
+                return Ok("Usuário autenticado com sucesso"); 
             } 
             catch(Exception excecao)
             {
-                _logger.LogError("Ocorreu erro ao efetuar login", excecao, requisicao);
+                _logger.LogError($"Ocorreu erro ao efetuar login: {excecao.Message}", excecao, requisicao);
                 return StatusCode(StatusCodes.Status500InternalServerError, new ErroRespostaDto()
                 {
                     Status = StatusCodes.Status500InternalServerError, 
